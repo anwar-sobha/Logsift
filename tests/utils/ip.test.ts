@@ -5,7 +5,7 @@ describe('classifyIp', () => {
   it.each([
     ['8.8.8.8', 'public'],
     ['20.50.2.1', 'public'],
-    ['10.140.1.17', 'private'],
+    ['10.20.0.12', 'private'],
     ['172.15.0.1', 'public'],
     ['172.16.0.1', 'private'],
     ['172.31.255.255', 'private'],

@@ -31,9 +31,9 @@ describe('IIS parser', () => {
 
   it('combines date and time into a UTC timestamp', () => {
     const r = result.rows[0]!;
-    expect(r.ts).toBe(Date.UTC(2026, 9, 27, 4, 42, 2));
+    expect(r.ts).toBe(Date.UTC(2026, 2, 14, 9, 12, 2));
     expect(r.values.timestamp).toBe(r.ts);
-    expect(new Date(r.ts!).toISOString()).toBe('2026-10-27T04:42:02.000Z');
+    expect(new Date(r.ts!).toISOString()).toBe('2026-03-14T09:12:02.000Z');
   });
 
   it('turns "-" into null', () => {
@@ -57,14 +57,14 @@ describe('IIS parser', () => {
 
   it('strips the ~1 site prefix and flags isScm', () => {
     const scm = result.rows[4]!.values;
-    expect(scm['s-sitename']).toBe('APP-CTECH-BE-CHQTRK-PROD');
+    expect(scm['s-sitename']).toBe('DEMO-API-PROD');
     expect(scm.isScm).toBe(true);
     expect(result.rows[0]!.values.isScm).toBe(false);
     expect(result.rows.filter((r) => r.values.isScm)).toHaveLength(3);
   });
 
   it('extracts X-ARR-LOG-ID into arrLogId', () => {
-    expect(result.rows[0]!.values.arrLogId).toBe('506fc588-3fd7-4fc3-8c19-3ea6713d52ac');
+    expect(result.rows[0]!.values.arrLogId).toBe('95d6c588-90a6-4936-b1b2-2b81d97b67aa');
     expect(result.rows[4]!.values.arrLogId).toBeNull();
   });
 
@@ -72,7 +72,7 @@ describe('IIS parser', () => {
     const hc = result.rows.filter((r) => r.values.isHealthCheck);
     expect(hc).toHaveLength(6);
     expect(result.rows[3]!.values.isHealthCheck).toBe(true); // 127.0.0.1 + AlwaysOn
-    expect(result.rows[4]!.values.isHealthCheck).toBe(true); // AlwaysOn from 10.0.32.5
+    expect(result.rows[4]!.values.isHealthCheck).toBe(true); // AlwaysOn from 10.30.0.5
     expect(result.rows[0]!.values.isHealthCheck).toBe(false);
 
     const ipOnly = parseText(`${HEADER}\n2026-10-27 04:42:02 SITE GET / - 80 - 127.0.0.1 curl - - h 200 0 0 1 1 1`);
